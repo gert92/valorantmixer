@@ -1,15 +1,16 @@
 const Mix = require('../models/data');
 
 exports.createGame = async (req, res, next) => {
-  let game = await Mix.find();
+  let games = await Mix.find();
 
-  if (game) {
-    game.remove();
+  if (games) {
+    games.map((game) => game.remove());
   }
   const mix = await Mix.create({
     starter: req.user,
     pool: req.players,
   });
+  console.log(mix);
   return mix;
 };
 
