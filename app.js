@@ -47,11 +47,11 @@ client.on('message', async (message, args) => {
               return member;
             });
             if (message.content === `${prefix}mix`) {
-              let voice;
+              let voice = [];
               message.guild.channels.cache.map((channel) => {
-                channel.members.map((member) => {
-                  if (member.id === message.author.id) {
-                    voice = channel.members.map((users) => users.user.username);
+                customMembers.map((member) => {
+                  if (member.voice.channelID === channel.id) {
+                    voice.push(member.displayName);
                   }
                 });
               });
@@ -76,6 +76,7 @@ client.on('message', async (message, args) => {
                 }
                 const teams = new Discord.MessageEmbed()
                   .setColor('#0099ff')
+                  .setThumbnail('https://i.imgur.com/7fn2zvn.png')
                   .setTitle('Tiimid')
                   .addFields(
                     { name: '1. Tiim', value: team1.map((user) => user) },
@@ -123,16 +124,23 @@ client.on('message', async (message, args) => {
 
               // poolmix
             } else if (message.content === `${prefix}mixpool`) {
-              let voice;
+              let voice = [];
               message.guild.channels.cache.map((channel) => {
-                channel.members.map((member) => {
-                  if (member.id === message.author.id) {
-                    voice = channel.members.map((users) => users.user.username);
+                customMembers.map((member) => {
+                  if (member.voice.channelID === channel.id) {
+                    voice.push(member.displayName);
                   }
                 });
               });
 
-              message.channel.send(voice);
+              const textAllMembers = new Discord.MessageEmbed()
+                .setTitle('Kõik osalejad')
+                .addFields({ name: '---------------', value: voice })
+                .setColor('#00fcff')
+                .setThumbnail('https://i.imgur.com/7fn2zvn.png')
+                .setTimestamp();
+
+              message.channel.send(textAllMembers);
             } else if (message.content === `${prefix}picker`) {
               let voice = [];
               message.guild.channels.cache.map((channel) => {
@@ -146,6 +154,7 @@ client.on('message', async (message, args) => {
 
               const list = new Discord.MessageEmbed()
                 .setColor('#0099ff')
+                .setThumbnail('https://i.imgur.com/7fn2zvn.png')
                 .setTitle('Osalejad')
                 .addFields(
                   { name: '--------------', value: voice },
@@ -197,11 +206,11 @@ client.on('message', async (message, args) => {
                 })
                 .catch((error) => console.log(error));
             } else if (message.content === `${prefix}pick ${args}`) {
-              let voice;
+              let voice = [];
               message.guild.channels.cache.map((channel) => {
-                channel.members.map((member) => {
-                  if (member.id === message.author.id) {
-                    voice = channel.members.map((users) => users.user.username);
+                customMembers.map((member) => {
+                  if (member.voice.channelID === channel.id) {
+                    voice.push(member.displayName);
                   }
                 });
               });
@@ -232,6 +241,7 @@ client.on('message', async (message, args) => {
                     }
                     const list = new Discord.MessageEmbed()
                       .setColor('#0099ff')
+                      .setThumbnail('https://i.imgur.com/7fn2zvn.png')
                       .setTitle('POOL PARTY 2020')
                       .addFields(data)
                       .setTimestamp();
