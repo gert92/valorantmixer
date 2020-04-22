@@ -134,14 +134,15 @@ client.on('message', async (message, args) => {
 
               message.channel.send(voice);
             } else if (message.content === `${prefix}picker`) {
-              let voice;
+              let voice = [];
               message.guild.channels.cache.map((channel) => {
-                channel.members.map((member) => {
-                  if (member.id === message.author.id) {
-                    voice = channel.members.map((users) => users.user.username);
+                customMembers.map((member) => {
+                  if (member.voice.channelID === channel.id) {
+                    voice.push(member.displayName);
                   }
                 });
               });
+              console.log(voice);
 
               const list = new Discord.MessageEmbed()
                 .setColor('#0099ff')
