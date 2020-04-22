@@ -1,10 +1,10 @@
 const Mix = require('../models/data');
 
 exports.createGame = async (req, res, next) => {
-  let game = await Mix.findOne();
+  let game = await Mix.find();
 
   if (game) {
-    game = await Mix.findOneAndRemove();
+    game.remove();
   }
   const mix = await Mix.create({
     starter: req.user,
