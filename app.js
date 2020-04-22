@@ -58,15 +58,15 @@ client.on('message', async (message, args) => {
               const team1 = [];
               const team2 = [];
               // const testArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-              if (voice.length === 2) {
-                for (let i = 0; team1.length < 1; i++) {
-                  let rand = Math.floor(Math.random() * 2);
+              if (voice.length === 10) {
+                for (let i = 0; team1.length < 5; i++) {
+                  let rand = Math.floor(Math.random() * 10);
                   if (!team1.includes(voice[rand])) {
                     team1.push(voice[rand]);
                   }
                 }
-                for (let j = 0; team2.length < 1; j++) {
-                  let rand = Math.floor(Math.random() * 2);
+                for (let j = 0; team2.length < 5; j++) {
+                  let rand = Math.floor(Math.random() * 10);
                   if (
                     !team1.includes(voice[rand]) &&
                     !team2.includes(voice[rand])
