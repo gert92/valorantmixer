@@ -8,15 +8,20 @@ module.exports = {
   guildOnly: true,
   execute(message, args) {
     let users = [];
+    let channelId;
 
     message.guild.channels.cache.map((channel) => {
       channel.members.map((member) => {
         if (member.voice.channelID === channel.id) {
-          users.push(member.displayName);
+          if (member.voice.channelID === message.member.voice.channelID) {
+            users.push(member.displayName);
+            channelId = member.voice.channel.id;
+          }
         }
       });
     });
-    console.log(users);
+
+    console.log(channelId);
 
     const list = new Discord.MessageEmbed()
       .setColor('#0099ff')
@@ -34,6 +39,7 @@ module.exports = {
     createGame({
       user: message.author.username,
       players: users,
+      channelId: channelId,
     });
   },
 };

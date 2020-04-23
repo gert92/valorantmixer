@@ -17,6 +17,10 @@ const MixSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  channelId: {
+    type: String,
+    require,
+  },
 });
 
 module.exports = mongoose.model('Mix', MixSchema);

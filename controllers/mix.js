@@ -1,21 +1,23 @@
 const Mix = require('../models/data');
 
 exports.createGame = async (req, res, next) => {
-  let games = await Mix.find();
+  let games = await Mix.findOne({ channelId: req.channelId });
 
   if (games) {
-    games.map((game) => game.remove());
+    // games.map((game) => game.remove());
+    games.remove();
   }
   const mix = await Mix.create({
     starter: req.user,
     pool: req.players,
+    channelId: req.channelId,
   });
   console.log(mix);
   return mix;
 };
 
 exports.pickLeaders = async (req, res, next) => {
-  let game = await Mix.findOne();
+  let game = await Mix.findOne({ channelId: req.channelId });
   console.log(game);
 
   const nigger = game.team1.length < 1 ? 'team1' : 'team2';
@@ -26,8 +28,8 @@ exports.pickLeaders = async (req, res, next) => {
       const index = game.pool.indexOf(req.leader);
       game.pool.splice(index, 1);
       game.save();
-      game = await Mix.findByIdAndUpdate(
-        game._id,
+      game = await Mix.findOneAndUpdate(
+        { channelId: req.channelId },
         {
           $push: { leaders: req.leader, [nigger]: req.leader },
         },
@@ -41,7 +43,7 @@ exports.pickLeaders = async (req, res, next) => {
 };
 
 exports.teamPicker = async (req, res, next) => {
-  let game = await Mix.findOne();
+  let game = await Mix.findOne({ channelId: req.channelId });
 
   //   if (game.pool.length === 0) {
   //     req.message.channel.send('Kõik mängijad on valitud!');
@@ -55,8 +57,8 @@ exports.teamPicker = async (req, res, next) => {
         const index = game.pool.indexOf(req.player);
         game.pool.splice(index, 1);
         await game.save();
-        game = await Mix.findByIdAndUpdate(
-          game._id,
+        game = await Mix.findOneAndUpdate(
+          { channelId: req.channelId },
           { $push: { [nigger]: req.player } },
           { new: true }
         );
@@ -72,6 +74,6 @@ exports.teamPicker = async (req, res, next) => {
 };
 
 exports.mixPool = async (req, res, next) => {
-  let game = await Mix.findOne();
+  let game = await Mix.findOne({ channelId: req.channelId });
   return game;
 };

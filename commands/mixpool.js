@@ -4,20 +4,22 @@ module.exports = {
   name: 'mixpool',
   cooldown: 5,
   description: 'Mixpool!',
-  //   guildOnly: true,
+  guildOnly: true,
   execute(message, args) {
-    let voice = [];
+    let users = [];
 
     message.guild.channels.cache.map((channel) => {
       channel.members.map((member) => {
         if (member.voice.channelID === channel.id) {
-          voice.push(member.displayName);
+          if (member.voice.channelID === message.member.voice.channelID) {
+            users.push(member.displayName);
+          }
         }
       });
     });
     const textAllMembers = new Discord.MessageEmbed()
       .setTitle('Kõik osalejad')
-      .addFields({ name: '---------------', value: voice })
+      .addFields({ name: '---------------', value: users })
       .setColor('#00fcff')
       .setThumbnail('https://i.imgur.com/7fn2zvn.png')
       .setTimestamp();

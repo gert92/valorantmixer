@@ -11,10 +11,13 @@ module.exports = {
     message.guild.channels.cache.map((channel) => {
       channel.members.map((member) => {
         if (member.voice.channelID === channel.id) {
-          users.push(member.displayName);
+          if (member.voice.channelID === message.member.voice.channelID) {
+            users.push(member.displayName);
+          }
         }
       });
     });
+
     const team1 = [];
     const team2 = [];
     const map = [

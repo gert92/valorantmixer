@@ -8,6 +8,17 @@ module.exports = {
   args: true,
   usage: '@nimi',
   execute(message, args) {
+    let channelId;
+
+    message.guild.channels.cache.map((channel) => {
+      channel.members.map((member) => {
+        if (member.voice.channelID === channel.id) {
+          if (member.voice.channelID === message.member.voice.channelID) {
+            channelId = member.voice.channel.id;
+          }
+        }
+      });
+    });
     const customMembers = message.channel.members.map((member) => {
       return member;
     });
@@ -21,6 +32,7 @@ module.exports = {
         teamPicker({
           leader: message.author.username,
           player: member.displayName,
+          channelId: channelId,
         }).then((resolve) => {
           let data = [
             {

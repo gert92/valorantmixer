@@ -7,6 +7,15 @@ module.exports = {
   description: 'start!',
   guildOnly: true,
   execute(message, args) {
+    let channelId;
+
+    message.guild.channels.cache.map((channel) => {
+      channel.members.map((member) => {
+        if (member.voice.channelID === channel.id) {
+          channelId = channel.id;
+        }
+      });
+    });
     const map = [
       'https://blitz-cdn.blitz.gg/0x500/blitz/val/maps/haven/haven-hero.jpeg',
       'https://blitz-cdn.blitz.gg/0x500/blitz/val/maps/bind/bind-hero.jpeg',
@@ -20,7 +29,7 @@ module.exports = {
       .setTitle('GLHF');
     message.channel.send(teams);
 
-    mixPool().then((resolve) => {
+    mixPool({ channelId: channelId }).then((resolve) => {
       if (resolve.pool.length === 0) {
         message.guild.channels
           .create('Attackers', { type: 'voice', userLimit: 5 })
