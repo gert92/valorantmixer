@@ -17,38 +17,25 @@ exports.createGame = async (req, res, next) => {
 exports.pickLeaders = async (req, res, next) => {
   let game = await Mix.findOne();
   console.log(game);
+
+  const nigger = game.team1.length < 1 ? 'team1' : 'team2';
+
   if (game.leaders.length < 2) {
     console.log(game.id);
     if (!game.leaders.includes(req.leader)) {
-      if (game.team1.length < 1) {
-        const index = game.pool.indexOf(req.leader);
-        game.pool.splice(index, 1);
-        game.save();
-        game = await Mix.findByIdAndUpdate(
-          game._id,
-          {
-            $push: { leaders: req.leader, team1: req.leader },
-          },
-          { new: true }
-        );
-        req.message.reply(
-          'Sa oled 1. tiimi liider! Kirjuta !pick @nimi, et valida omale meeskonnaliikmed'
-        );
-      } else {
-        const index = game.pool.indexOf(req.leader);
-        game.pool.splice(index, 1);
-        game.save();
-        game = await Mix.findByIdAndUpdate(
-          game._id,
-          {
-            $push: { leaders: req.leader, team2: req.leader },
-          },
-          { new: true }
-        );
-        req.message.reply(
-          'Sa oled 2. tiimi liider! Kirjuta !pick @nimi, et valida omale meeskonnaliikmed'
-        );
-      }
+      const index = game.pool.indexOf(req.leader);
+      game.pool.splice(index, 1);
+      game.save();
+      game = await Mix.findByIdAndUpdate(
+        game._id,
+        {
+          $push: { leaders: req.leader, [nigger]: req.leader },
+        },
+        { new: true }
+      );
+      req.message.reply(
+        'Sa oled tiimi liider! Kirjuta !pick @nimi, et valida omale meeskonnaliikmed'
+      );
     }
   }
 };
@@ -63,6 +50,7 @@ exports.teamPicker = async (req, res, next) => {
 
   try {
     if (game.leaders.includes(req.leader)) {
+      // console.log(req.leader);
       if (game.pool.includes(req.player)) {
         const index = game.pool.indexOf(req.player);
         game.pool.splice(index, 1);
