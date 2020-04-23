@@ -21,25 +21,33 @@ module.exports = {
       });
     });
 
-    console.log(channelId);
+    if (users.length === 10) {
+      const list = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setThumbnail('https://i.imgur.com/7fn2zvn.png')
+        .setTitle('Osalejad')
+        .addFields(
+          { name: '--------------', value: users },
+          { name: '\u200B', value: '\u200B' },
+          { name: 'Help', value: '!leader et minna tiimijuhiks' }
+        )
+        .setTimestamp();
 
-    const list = new Discord.MessageEmbed()
-      .setColor('#0099ff')
-      .setThumbnail('https://i.imgur.com/7fn2zvn.png')
-      .setTitle('Osalejad')
-      .addFields(
-        { name: '--------------', value: users },
-        { name: '\u200B', value: '\u200B' },
-        { name: 'Help', value: '!leader et minna tiimijuhiks' }
-      )
-      .setTimestamp();
+      message.channel.send(list);
 
-    message.channel.send(list);
-
-    createGame({
-      user: message.author.username,
-      players: users,
-      channelId: channelId,
-    });
+      createGame({
+        user: message.author.username,
+        players: users,
+        channelId: channelId,
+      });
+    } else if (users.length > 10) {
+      message.channel.send(
+        `${users.length - 10} ${
+          users.length - 10 === 1 ? 'inimene' : 'inimest'
+        } üle!`
+      );
+    } else {
+      message.channel.send(`@here +${10 - users.length} mixile!`);
+    }
   },
 };
